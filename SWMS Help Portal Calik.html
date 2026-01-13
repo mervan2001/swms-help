@@ -1,0 +1,2396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWMS Help Portal | Smart Europe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #121212;
+            --bg-card: #0d0d0d;
+            --bg-hover: #1a1a1a;
+            --border-color: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #d4d4d8;
+            --text-muted: #a1a1aa;
+            --accent: #ffffff;
+            --accent-hover: #e4e4e7;
+            --accent-glow: rgba(255, 255, 255, 0.1);
+            --success: #d4d4d8;
+            --warning: #d4d4d8;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+            --transition: all 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Layout */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 8px 24px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .logo-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Search */
+        .search-container {
+            padding: 0 8px;
+            margin-bottom: 24px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 12px 10px 38px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: #ffffff;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        .nav-section {
+            margin-bottom: 8px;
+        }
+
+        .nav-section-title {
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-section-title.collapsible {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition);
+        }
+
+        .nav-section-title.collapsible:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-section-title.collapsible::after {
+            content: '+';
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .nav-section-title.collapsible.expanded::after {
+            content: '−';
+        }
+
+        .nav-section-items {
+            display: none;
+        }
+
+        .nav-section-items.expanded {
+            display: block;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #ffffff;
+        }
+
+        .nav-item-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 32px 48px;
+            max-width: 900px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .breadcrumb a:hover {
+            color: #ffffff;
+        }
+
+        .breadcrumb-separator {
+            color: var(--border-color);
+        }
+
+        /* Page Header */
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .page-description {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 600px;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #080808;
+            border: 1px solid #1f1f1f;
+            border-radius: var(--radius);
+            padding: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            border-color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: #121212;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover td {
+            background: var(--bg-hover);
+        }
+
+        /* Checklist */
+        .checklist {
+            background: #080808;
+            border: 1px solid #1f1f1f;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .checklist-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .checkbox:hover {
+            border-color: #ffffff;
+        }
+
+        .checkbox.checked {
+            background: #ffffff;
+            border-color: #ffffff;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            color: #000000;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .checklist-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Code blocks */
+        code {
+            background: var(--bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        .code-block {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* Info boxes */
+        .info-box {
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .info-box.tip {
+            background: #080808;
+            border: 1px solid #1f1f1f;
+        }
+
+        .info-box.warning {
+            background: #080808;
+            border: 1px solid #1f1f1f;
+        }
+
+        .info-box-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .info-box-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .info-box-content strong {
+            color: var(--text-primary);
+        }
+
+        /* Status badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge.success {
+            background: rgba(113, 113, 122, 0.15);
+            color: var(--text-secondary);
+        }
+
+        .badge.warning {
+            background: rgba(113, 113, 122, 0.2);
+            color: var(--text-secondary);
+        }
+
+        .badge.info {
+            background: rgba(113, 113, 122, 0.15);
+            color: var(--text-secondary);
+        }
+
+        /* Paragraphs and lists */
+        .content p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+            color: var(--text-secondary);
+        }
+
+        .content li {
+            margin-bottom: 8px;
+        }
+
+        .content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 32px 0 16px;
+        }
+
+        .content h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 24px 0 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Search Results */
+        .search-results {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin-top: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        .search-result-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .search-result-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .search-result-path {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 24px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Smooth transitions for page changes */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo" onclick="showPage('home')">
+                    <div class="logo-icon">SW</div>
+                    <div>
+                        <div class="logo-text">SWMS Help</div>
+                        <div class="logo-subtitle">Process Guide | By Mervan Hasan Calik</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="search-container">
+                <div class="search-box">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" class="search-input" placeholder="Search documentation..." id="searchInput">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+            </div>
+
+            <nav>
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <a class="nav-item active" onclick="showPage('home')" data-page="home">
+                        <span class="nav-item-icon">○</span>
+                        Overview
+                    </a>
+                    <a class="nav-item" onclick="showPage('tier2-swms-process')" data-page="tier2-swms-process">
+                        <span class="nav-item-icon">☁</span>
+                        Tier2/SWMS Process
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title collapsible" onclick="toggleNavSection(this)">Workflows</div>
+                    <div class="nav-section-items">
+                        <a class="nav-item" onclick="showPage('goodwill-process')" data-page="goodwill-process">
+                            <span class="nav-item-icon">○</span>
+                            Goodwill Process
+                        </a>
+                        <a class="nav-item" onclick="showPage('cost-review')" data-page="cost-review">
+                            <span class="nav-item-icon">○</span>
+                            Cost Review
+                        </a>
+                        <a class="nav-item" onclick="showPage('decisions')" data-page="decisions">
+                            <span class="nav-item-icon">○</span>
+                            Making Decisions
+                        </a>
+                        <a class="nav-item" onclick="showPage('claim-types')" data-page="claim-types">
+                            <span class="nav-item-icon">○</span>
+                            Claim Types
+                        </a>
+                        <a class="nav-item" onclick="showPage('warranty')" data-page="warranty">
+                            <span class="nav-item-icon">○</span>
+                            Warranty Claims (WA)
+                        </a>
+                        <a class="nav-item" onclick="showPage('goodwill')" data-page="goodwill">
+                            <span class="nav-item-icon">○</span>
+                            Goodwill Claims (NW)
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title collapsible" onclick="toggleNavSection(this)">Other</div>
+                    <div class="nav-section-items">
+                        <a class="nav-item" onclick="showPage('navigation')" data-page="navigation">
+                            <span class="nav-item-icon">○</span>
+                            System Navigation
+                        </a>
+                        <a class="nav-item" onclick="showPage('access')" data-page="access">
+                            <span class="nav-item-icon">○</span>
+                            Access & Login
+                        </a>
+                        <a class="nav-item" onclick="showPage('status-codes')" data-page="status-codes">
+                            <span class="nav-item-icon">○</span>
+                            Status Codes
+                        </a>
+                        <a class="nav-item" onclick="showPage('campaigns')" data-page="campaigns">
+                            <span class="nav-item-icon">○</span>
+                            Campaigns (TBD/TBS)
+                        </a>
+                        <a class="nav-item" onclick="showPage('documents')" data-page="documents">
+                            <span class="nav-item-icon">○</span>
+                            Document Index
+                        </a>
+                        <a class="nav-item" onclick="showPage('quick-ref')" data-page="quick-ref">
+                            <span class="nav-item-icon">○</span>
+                            Quick Reference
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- HOME PAGE -->
+            <div class="page active" id="page-home">
+                <div class="page-header">
+                    <h1 class="page-title">SWMS Help Portal</h1>
+                    <p class="page-description">Your guide to processing claims, managing workflows, and navigating the smart Warranty Management System.</p>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card" onclick="showPage('tier2-swms-process')">
+                        <div class="card-icon">☁</div>
+                        <h3 class="card-title">Tier2/SWMS Process</h3>
+                        <p class="card-description">Complete workflow for handling SWMS requests from SF Tier2 report, including goodwill approval checklist.</p>
+                    </div>
+                    <div class="card" onclick="showPage('goodwill-process')">
+                        <div class="card-icon">○</div>
+                        <h3 class="card-title">Goodwill Process</h3>
+                        <p class="card-description">Compensation options, CES approval workflow, and decision matrix.</p>
+                    </div>
+                    <div class="card" onclick="showPage('claim-types')">
+                        <div class="card-icon">○</div>
+                        <h3 class="card-title">Claim Types</h3>
+                        <p class="card-description">Understand WA, NW claims and their service type classifications.</p>
+                    </div>
+                    <div class="card" onclick="showPage('cost-review')">
+                        <div class="card-icon">○</div>
+                        <h3 class="card-title">Cost Review</h3>
+                        <p class="card-description">Labor costs, FRT, parts pricing and percentage distributions.</p>
+                    </div>
+                    <div class="card" onclick="showPage('status-codes')">
+                        <div class="card-icon">○</div>
+                        <h3 class="card-title">Status Codes</h3>
+                        <p class="card-description">What each claim status means and workflow progression.</p>
+                    </div>
+                    <div class="card" onclick="showPage('documents')">
+                        <div class="card-icon">○</div>
+                        <h3 class="card-title">Document Index</h3>
+                        <p class="card-description">Find guides, MMIs, and technical documents in SMACC.</p>
+                    </div>
+                    <div class="card" onclick="showPage('campaigns')">
+                        <div class="card-icon">○</div>
+                        <h3 class="card-title">Campaigns</h3>
+                        <p class="card-description">TBD, TBS, TBR campaign types and processing.</p>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <h2 class="section-title">Quick Access</h2>
+                    <div class="info-box tip">
+                        <span class="info-box-icon">→</span>
+                        <div class="info-box-content">
+                            <strong>SWMS Direct Access:</strong> <code>https://swms.smart.com</code><br>
+                            <strong>Via Service Desk:</strong> smart Service Desk → App List → SWMS
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NAVIGATION PAGE -->
+            <div class="page" id="page-navigation">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>System Navigation</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">System Navigation</h1>
+                    <p class="page-description">How to navigate the SWMS interface and find what you need.</p>
+                </div>
+
+                <div class="content">
+                    <h3>Main Menu Structure</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Menu Item</th>
+                                    <th>Description</th>
+                                    <th>Claim Prefix</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Bearbeitung von Ansprüchen</strong></td>
+                                    <td>Claim Processing</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>└─ Garantie</td>
+                                    <td>Warranty Claims</td>
+                                    <td><code>WA...</code></td>
+                                </tr>
+                                <tr>
+                                    <td>└─ Andere Typen</td>
+                                    <td>Other Types (Goodwill)</td>
+                                    <td><code>NW...</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Service-Maßnahmen</strong></td>
+                                    <td>Service Measures</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>└─ Kampagnenbearbeitung</td>
+                                    <td>Campaign Processing</td>
+                                    <td><code>TBD/TBS/TBR</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Dashboard Sections</h3>
+                    <ul>
+                        <li><strong>Meine To-Do-Liste</strong> - Claims requiring your action</li>
+                        <li><strong>Kampagnenbearbeitung</strong> - Active service campaigns</li>
+                        <li><strong>Neue Veröffentlichung</strong> - New notifications/publications</li>
+                    </ul>
+
+                    <h3>Key Action Buttons</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Button</th>
+                                    <th>German</th>
+                                    <th>Function</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Save</td><td>Speichern</td><td>Save all entered data</td></tr>
+                                <tr><td>Decision</td><td>Entscheidung</td><td>Make approval/rejection decision</td></tr>
+                                <tr><td>Decision History</td><td>Entscheidungsverlauf</td><td>View previous decisions</td></tr>
+                                <tr><td>Print</td><td>Drucken</td><td>Print claim document</td></tr>
+                                <tr><td>Back</td><td>Zurück</td><td>Return to list</td></tr>
+                                <tr><td>Flag Comment</td><td>Flagge Kommentar</td><td>Add flagged comment</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCESS PAGE -->
+            <div class="page" id="page-access">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Access & Login</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Access & Login</h1>
+                    <p class="page-description">How to access SWMS and available language options.</p>
+                </div>
+
+                <div class="content">
+                    <div class="info-box tip">
+                        <span class="info-box-icon">→</span>
+                        <div class="info-box-content">
+                            <strong>Direct URL:</strong> <code>https://swms.smart.com</code><br>
+                            <strong>Via SED:</strong> <code>https://sed.smart.com/general/app-list</code>
+                        </div>
+                    </div>
+
+                    <h3>Access Path</h3>
+                    <p>Navigate to: <strong>smart Service Desk → App List → SWMS</strong></p>
+
+                    <h3>Available Languages</h3>
+                    <p>SWMS supports the following interface languages:</p>
+                    <ul>
+                        <li>Deutsch</li>
+                        <li>English</li>
+                        <li>Español</li>
+                        <li>Français</li>
+                        <li>Italiano</li>
+                        <li>Nederlands</li>
+                        <li>Português</li>
+                        <li>Svenska</li>
+                        <li>Norge</li>
+                        <li>简体中文</li>
+                        <li>Suomi</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- CLAIM TYPES PAGE -->
+            <div class="page" id="page-claim-types">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Claim Types</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Claim Types Overview</h1>
+                    <p class="page-description">Understanding the different types of claims processed in SWMS.</p>
+                </div>
+
+                <div class="content">
+                    <h3>Warranty Claims (WA...)</h3>
+                    <ul>
+                        <li>Standard warranty repairs</li>
+                        <li>Extended warranty (EXW)</li>
+                        <li>Integrated Service Package claims</li>
+                    </ul>
+
+                    <h3>Non-Warranty/Goodwill Claims (NW...)</h3>
+                    <ul>
+                        <li><strong>Kunden-CX Goodwill</strong> - Customer Experience Goodwill</li>
+                        <li>Transport damage handling</li>
+                        <li>Storage damage claims</li>
+                        <li>Delivery delay compensation</li>
+                        <li>RSA (Roadside Assistance) delay</li>
+                    </ul>
+
+                    <h3>Service Types (Serviceart)</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>German</th>
+                                    <th>English</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Über E-Commerce verkauftes Zubehör</td><td>E-commerce accessories</td></tr>
+                                <tr><td>Integriertes Servicepaket</td><td>Integrated Service Package</td></tr>
+                                <tr><td>Erweiterte Garantie</td><td>Extended Warranty</td></tr>
+                                <tr><td>Kunden-CX Goodwill</td><td>Customer Experience Goodwill</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Claim Number Formats</h3>
+                    <ul>
+                        <li><code>WA</code> + Date + Sequence = Warranty claim</li>
+                        <li><code>NW</code> + Date + Sequence = Non-warranty/Goodwill claim</li>
+                    </ul>
+                    <p>Example: <code>NW26011300000014</code></p>
+                </div>
+            </div>
+
+            <!-- WARRANTY PAGE -->
+            <div class="page" id="page-warranty">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="#" onclick="showPage('claim-types')">Claim Types</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Warranty Claims</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Warranty Claims (WA)</h1>
+                    <p class="page-description">Processing standard warranty repairs and extended warranty claims.</p>
+                </div>
+
+                <div class="content">
+                    <h3>Warranty Claim Types</h3>
+                    <ul>
+                        <li><strong>Standard Warranty</strong> - Repairs covered under manufacturer warranty</li>
+                        <li><strong>Extended Warranty (EXW)</strong> - Claims under purchased extended coverage</li>
+                        <li><strong>Integrated Service Package</strong> - Service package inclusions</li>
+                    </ul>
+
+                    <h3>Required Verifications</h3>
+                    <ul>
+                        <li>Warranty start and end dates</li>
+                        <li>Vehicle mileage within limits</li>
+                        <li>FIN validation</li>
+                        <li>First sales country matches</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- GOODWILL PAGE -->
+            <div class="page" id="page-goodwill">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="#" onclick="showPage('claim-types')">Claim Types</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Goodwill Claims</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Goodwill Claims (NW)</h1>
+                    <p class="page-description">Kunden-CX Goodwill and non-warranty compensation claims.</p>
+                </div>
+
+                <div class="content">
+                    <p>Goodwill claims (Kulanzfälle) are non-warranty claims where smart provides compensation to customers as a gesture of goodwill, typically for issues that fall outside standard warranty coverage.</p>
+
+                    <h3>Goodwill Categories</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Service Type</th>
+                                    <th>Use Case</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Kunden-CX Goodwill</td><td>General customer experience issues</td></tr>
+                                <tr><td>Über E-Commerce verkauftes Zubehör</td><td>E-commerce sold accessories</td></tr>
+                                <tr><td>Integriertes Servicepaket</td><td>Integrated service package claims</td></tr>
+                                <tr><td>Erweiterte Garantie</td><td>Extended warranty claims</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Goodwill Reasons (Grund)</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Reason</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Fahrzeugdefekt</td><td>Vehicle defect outside warranty</td></tr>
+                                <tr><td>Lieferverzug</td><td>Delivery delay compensation</td></tr>
+                                <tr><td>RSA-Verzögerung</td><td>Roadside assistance delay</td></tr>
+                                <tr><td>Auftragserteilung</td><td>Order placement issues</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Required Fields</h3>
+                    <p>Fields marked with * are mandatory:</p>
+                    <ul>
+                        <li>FIN* (Vehicle Identification Number)</li>
+                        <li>Kfz-Kennzeichen* (License plate)</li>
+                        <li>Kilometerstand* (Mileage)</li>
+                        <li>Serviceart* (Service type)</li>
+                        <li>Grund* (Reason)</li>
+                        <li>Sprache* (Language)</li>
+                        <li>Enddatum der Reparatur* (Repair end date)</li>
+                        <li>DMS-Auftragskarte* (DMS work order)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- TIER2 SWMS PROCESS PAGE -->
+            <div class="page" id="page-tier2-swms-process">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Tier2/SWMS Process</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Tier2/SWMS Process</h1>
+                    <p class="page-description">Complete workflow for handling SWMS requests from Salesforce Tier2 report through to CES approval.</p>
+                </div>
+
+                <div class="content">
+                    <div class="info-box tip">
+                        <span class="info-box-icon">i</span>
+                        <div class="info-box-content">
+                            <strong>Process Overview:</strong> SWMS requests come through Salesforce as automated cases. Tier2 agents process these by reviewing in SWMS Service Desk, making decisions, and coordinating goodwill compensation with CES.
+                        </div>
+                    </div>
+
+                    <h3>Step 1: Check Tier2 Salesforce Report</h3>
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Finding Incoming SWMS Requests</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Open the <strong>Tier2 Salesforce Report</strong> to view incoming SWMS requests</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Look for <strong>Automated Cases</strong> created from Salesforce when new SWMS requests arrive in the service desk</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Note: Normal CEC agents typically see these cases first and tag them as "Tier2" with status set to "Tier2"</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">These tagged cases appear in your Tier2 report and are ready for processing</span>
+                        </div>
+                    </div>
+
+                    <h3>Step 2: Take Case Into Progress</h3>
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Starting Work on a Case</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Select the case from the Tier2 report</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Take the case into progress</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Note the <strong>SWMS number</strong> from the case details</span>
+                        </div>
+                    </div>
+
+                    <h3>Step 3: Process in SWMS Service Desk</h3>
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Review and Decision in SWMS</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Open <strong>SWMS Service Desk</strong> and search for the case using the SWMS number</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Review all claim details, attachments, and documentation <strong>↓ start the goodwill claim review checklist</strong></span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Make your decision: <strong>Accept</strong>, <strong>Reject</strong>, or <strong>Return</strong></span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Document your decision with appropriate notes</span>
+                        </div>
+                    </div>
+
+                    <!-- Goodwill Approval Checklist - integrated from former standalone page -->
+                    <h4 style="margin-top: 32px; margin-bottom: 16px; color: var(--text-secondary);">Goodwill Claim Review Checklist</h4>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Verify Basic Information</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Dealer country (Einzelhändler Land)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">First sales country matches</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">FIN (Vehicle Identification Number) is valid</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Vehicle model and year correct</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Warranty dates (Start/End) verified (Warranty NW Claims)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Mileage (Kilometerstand) within limits (Warranty NW Claims)</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Check Service Type Classification</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Serviceart = "Kunden-CX Goodwill"</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Grund (Reason) is appropriate: Fahrzeugdefekt, Lieferverzug, RSA-Verzögerung, or Auftragserteilung</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Review Labor Costs (Arbeitskosten)</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Work number matches approved operations</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Labor hours are reasonable</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Hourly rate matches smart standards</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Percentage split correct (Händler % + Hersteller % + Kunde % = 100%)</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Review Parts Costs (Teilekosten)</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Part numbers are valid smart parts</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Quantities match work performed</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Unit prices match smart pricing</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Part category correct</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Verify Documentation</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Attachments present in "Anhang" section</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">CMR (shipping documents) - if applicable</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Damage photos included</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Damage report present</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Authorization email from smart</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">No personal data in attachments (license plates, identifiable persons)</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Review Notes</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Dealer remarks (Anmerkungen Händler) reviewed</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Manufacturer notes (Anmerkungen des Herstellers) added if needed</span>
+                        </div>
+                    </div>
+
+                    <h3>Step 4: Upload SWMS Report to Salesforce Case</h3>
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Documentation Upload</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">In SWMS Service Desk, click <strong>Print</strong> (Drucken) to generate a PDF of the case showing your decision</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Return to the Salesforce case</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Upload the SWMS decision PDF as a <strong>post/attachment</strong> to the case</span>
+                        </div>
+                    </div>
+
+                    <h3>Step 5: Handle Based on Decision Type</h3>
+
+                    <div class="info-box tip" style="background: #080808; border: 1px solid #1f1f1f;">
+                        <span class="info-box-icon">+</span>
+                        <div class="info-box-content">
+                            <strong>If ACCEPTED:</strong>
+                            <ul style="margin-top: 8px; margin-bottom: 0;">
+                                <li>Create a <strong>goodwill compensation request</strong> OR ask CEC to create one</li>
+                                <li>The SWMS case itself can be used directly as the goodwill request</li>
+                                <li>See the latest Goodwill Process KMS in Salesforce for detailed compensation steps</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="info-box" style="background: #080808; border: 1px solid #1f1f1f;">
+                        <span class="info-box-icon">x</span>
+                        <div class="info-box-content">
+                            <strong>If REJECTED:</strong>
+                            <ul style="margin-top: 8px; margin-bottom: 0;">
+                                <li>Add a post to the Salesforce case explaining the rejection reason</li>
+                                <li>Close/resolve the case</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="info-box warning">
+                        <span class="info-box-icon">←</span>
+                        <div class="info-box-content">
+                            <strong>If RETURNED:</strong>
+                            <ul style="margin-top: 8px; margin-bottom: 0;">
+                                <li>Add a post to the Salesforce case explaining why it was returned</li>
+                                <li>Close/resolve the case</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>Step 6: CES Notification (For Accepted Cases)</h3>
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Notify CES After Compensation Request</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Once the compensation request has been sent, wait for CES approval</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">After CES approval is received, tag <strong>Daniel Menner</strong> (current main CES contact as of 13.1.26) in the case</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Tag as <strong>"FYI"</strong></span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Attach the <strong>SWMS Decision PDF</strong> to the post</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">The compensation and SWMS case contain all information CES needs</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box tip">
+                        <span class="info-box-icon">i</span>
+                        <div class="info-box-content">
+                            <strong>Key Contact:</strong> Daniel Menner is the current main CES contact for FYI notifications (as of January 2026).
+                        </div>
+                    </div>
+
+                    <h3>Process Summary Flow</h3>
+                    <div class="code-block">
+1. Check Tier2 SF Report → Find tagged SWMS cases
+2. Take case into progress
+3. Search SWMS number in SWMS Service Desk
+4. Review and make decision (Accept/Reject/Return)
+5. Print SWMS case as PDF
+6. Upload PDF to SF case as post
+7. If Accepted:
+   → Create goodwill/compensation request
+   → Wait for CES approval
+   → Tag Daniel Menner as FYI with SWMS PDF attached
+8. If Rejected/Returned:
+   → Post explanation to case
+   → Close/resolve case
+                    </div>
+                </div>
+            </div>
+
+            <!-- GOODWILL APPROVAL PAGE -->
+            <div class="page" id="page-goodwill-approval">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="#" onclick="showPage('goodwill')">Goodwill Claims</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Approval Process</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Goodwill Approval Process</h1>
+                    <p class="page-description">Complete checklist for reviewing and approving goodwill claims from service partners.</p>
+                </div>
+
+                <div class="content">
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Step 1: Verify Basic Information</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Dealer country (Einzelhändler Land)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">First sales country matches</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">FIN (Vehicle Identification Number) is valid</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Vehicle model and year correct</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Warranty dates (Start/End) verified</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Mileage (Kilometerstand) within limits</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Step 2: Check Service Type Classification</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Serviceart = "Kunden-CX Goodwill"</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Grund (Reason) is appropriate: Fahrzeugdefekt, Lieferverzug, RSA-Verzögerung, or Auftragserteilung</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Step 3: Review Labor Costs (Arbeitskosten)</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Work number matches approved operations</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Labor hours are reasonable</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Hourly rate matches smart standards</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Percentage split correct (Händler % + Hersteller % + Kunde % = 100%)</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Step 3b: Review Parts Costs (Teilekosten)</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Part numbers are valid smart parts</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Quantities match work performed</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Unit prices match smart pricing</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Part category correct</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">📎 Step 4: Verify Documentation</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Attachments present in "Anhang" section</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">CMR (shipping documents) - if applicable</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Damage photos included</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Damage report present</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Authorization email from smart</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">No personal data in attachments (license plates, identifiable persons)</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">📝 Step 5: Review Notes</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Dealer remarks (Anmerkungen Händler) reviewed</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Manufacturer notes (Anmerkungen des Herstellers) added if needed</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box warning">
+                        <span class="info-box-icon">!</span>
+                        <div class="info-box-content">
+                            <strong>Privacy Notice:</strong> Do not upload attachments containing personal data such as license plates in photos, identifiable persons, or customer personal information beyond what's in the form.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GOODWILL PROCESS PAGE -->
+            <div class="page" id="page-goodwill-process">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <a href="#" onclick="showPage('goodwill')">Goodwill Claims</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Goodwill Process</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Customer Experience Goodwill Process</h1>
+                    <p class="page-description">Complete guide for creating and managing goodwill compensation requests, including CES approval workflow.</p>
+                </div>
+
+                <div class="content">
+                    <div class="info-box tip">
+                        <span class="info-box-icon">i</span>
+                        <div class="info-box-content">
+                            <strong>What is Customer Experience Goodwill?</strong> A budget within the Customer Engagement Solutions (CES) team at smart Europe GmbH to compensate customers who had unsatisfying experiences with smart services/products. This helps maintain customer loyalty and positive brand perception.
+                        </div>
+                    </div>
+
+                    <h3>Who Is Involved?</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Party</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Customer</strong></td><td>smart Europe GmbH customers who experienced service below standard</td></tr>
+                                <tr><td><strong>CEC</strong></td><td>Central point of contact - picks up complaints, requests CES approval, executes compensation</td></tr>
+                                <tr><td><strong>ASP</strong></td><td>Authorized Service Partners - forward eligible cases via SWMS, support execution</td></tr>
+                                <tr><td><strong>CES</strong></td><td>Customer Engagement Solutions - process/budget owner, provides approvals/rejections</td></tr>
+                                <tr><td><strong>Markets</strong></td><td>Can initiate requests but must send to CEC - not authorized for final decisions</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Covered Use Cases</h3>
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Eligible for Goodwill Compensation</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Delivery delay > 6 weeks caused by smart</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Issues during order process blocking purchasing > 2 weeks</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Defects on delivery</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Incorrect deliveries (wrong colour, wrong line, etc.)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Waiting for accessories (Winter wheels, Trailer Hook, etc.) ordered via eCommerce</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Vehicle issues/defects without solution at workshop > 3 weeks</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Delay with Roadside Assistance > 3 hours</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">More than 3 workshop visits for same defects within 4 months</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Special cases at instigation of Area Sales Manager or market CEO</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Certain mobility cases (not covered by RSA/workshop mobility)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">RSA related costs exceeding limits</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box" style="background: #080808; border: 1px solid #1f1f1f;">
+                        <span class="info-box-icon">x</span>
+                        <div class="info-box-content">
+                            <strong>NOT Covered:</strong>
+                            <ul style="margin-top: 8px; margin-bottom: 0;">
+                                <li>Mistakes by customer or dealer</li>
+                                <li>Customers who already received a benefit from smart</li>
+                                <li>Minor inconveniences solved within 3 weeks</li>
+                                <li>Non-customer cases (market vehicles, demo cars)</li>
+                                <li>Defect not yet fixed (wait until root cause is resolved)</li>
+                                <li>Missed promotions by a few days</li>
+                                <li>Frozen doors</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>Compensation Options</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Options</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Vouchers</strong><br>(Primary)</td>
+                                    <td>
+                                        <ul style="margin: 0; padding-left: 16px;">
+                                            <li>Merchandise Vouchers (priority)</li>
+                                            <li>DCS Charging Vouchers (fallback)</li>
+                                        </ul>
+                                    </td>
+                                    <td>Values: 50-500 EUR. Managed by CES, sent via email by CEC</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Discounts</strong></td>
+                                    <td>
+                                        <ul style="margin: 0; padding-left: 16px;">
+                                            <li>Accessories from smart store</li>
+                                            <li>Workshop visit costs</li>
+                                        </ul>
+                                    </td>
+                                    <td>Must go through SWMS, needs smart Europe approval</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Other</strong><br>(Rare)</td>
+                                    <td>
+                                        <ul style="margin: 0; padding-left: 16px;">
+                                            <li>Payout (requires market FC approval)</li>
+                                            <li>Mobility solutions</li>
+                                        </ul>
+                                    </td>
+                                    <td>Cash refunds should be last option</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Compensation Decision Matrix</h3>
+                    <p>Calculate points based on severity, customer type, impact, and repetitiveness to determine appropriate compensation:</p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Points Score</th>
+                                    <th>&lt; 5</th>
+                                    <th>5-8</th>
+                                    <th>9-11</th>
+                                    <th>12</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Voucher</strong></td>
+                                    <td>50 EUR</td>
+                                    <td>100 EUR</td>
+                                    <td>150-200 EUR</td>
+                                    <td>250-500 EUR</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Discount (accessories)</strong></td>
+                                    <td>-</td>
+                                    <td>up to 100 EUR</td>
+                                    <td>up to 200 EUR</td>
+                                    <td>up to 500 EUR</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Discount (workshop)</strong></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>up to 200 EUR</td>
+                                    <td>up to 500 EUR</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Points Calculation:</h4>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>1 Point</th>
+                                    <th>2 Points</th>
+                                    <th>3 Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Severity</td><td>Minor inconvenience</td><td>Significant disruption</td><td>Safety/critical concern</td></tr>
+                                <tr><td>Customer Type</td><td>Lead customer</td><td>B2C customer</td><td>B2B customer</td></tr>
+                                <tr><td>Impact</td><td>Blocking purchasing</td><td>Blocking mobility</td><td>Causing legal issues</td></tr>
+                                <tr><td>Repetitiveness</td><td>First occurrence</td><td>Second occurrence</td><td>Multiple occurrences</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>CES Approval Process</h3>
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Step-by-Step Approval Workflow</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text"><strong>1.</strong> Document case in Salesforce (all goodwill cases must be documented)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text"><strong>2.</strong> Check compensation matrix to determine appropriate offer</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text"><strong>3.</strong> Tag your CES Ops Specialist to discuss options before suggesting to customer</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text"><strong>4.</strong> Create Goodwill approval request in Salesforce with:
+                                <ul style="margin-top: 4px;">
+                                    <li>Applicable use case (copy/paste from covered cases)</li>
+                                    <li>Proof points explaining why use case applies</li>
+                                    <li>Request type and justification</li>
+                                </ul>
+                            </span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text"><strong>5.</strong> Submit for approval - CES Specialist reviews and approves/rejects</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text"><strong>6.</strong> If >= 500 EUR: Send Goodwill Agreement to customer for signature</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text"><strong>7.</strong> Execute compensation (send voucher code / inform retailer for discount)</span>
+                        </div>
+                    </div>
+
+                    <h3>CES Ops Specialists by Market</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Specialist</th>
+                                    <th>Markets</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Faiza</td><td>UK</td></tr>
+                                <tr><td>Daniel M.</td><td>DACH (DE, AT, CH), NL</td></tr>
+                                <tr><td>Daniel B.</td><td>ES, PT, IT</td></tr>
+                                <tr><td>Carla</td><td>FR, BE, SE</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="info-box warning">
+                        <span class="info-box-icon">!</span>
+                        <div class="info-box-content">
+                            <strong>Important Rules:</strong>
+                            <ul style="margin-top: 8px; margin-bottom: 0;">
+                                <li>Prioritize <strong>Merchandise vouchers</strong> as primary compensation</li>
+                                <li>Use <strong>DCS vouchers</strong> as fallback if merchandise unsuitable</li>
+                                <li>Any non-merchandise compensation must be raised to CES first</li>
+                                <li>Don't promise compensation before CES approval</li>
+                                <li>Claims in SWMS are valid for 90 days only</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>Goodwill Agreement Requirement</h3>
+                    <p>A signed Goodwill Agreement is required when:</p>
+                    <ul>
+                        <li>Compensation value is <strong>>= 500 EUR/CHF/GBP</strong></li>
+                        <li>Compensation item is an accessory not offered in official smart store (e.g., floor mats, wallbox)</li>
+                    </ul>
+                    <p>Process: Customer signs first, then market signs. Download templates from KMS (search "Goodwill Clause").</p>
+
+                    <h3>After CES Approval - Notifying CES</h3>
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ FYI Notification to CES</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Tag <strong>Daniel Menner</strong> in the Salesforce case (current main CES contact as of 13.1.26)</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Mark post as <strong>"FYI"</strong> - no need for detailed information</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Attach the <strong>SWMS Decision PDF</strong></span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">The compensation request and SWMS case contain all information CES needs</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box tip">
+                        <span class="info-box-icon">@</span>
+                        <div class="info-box-content">
+                            <strong>Goodwill Email:</strong> <code>experience.goodwill@smart.com</code><br>
+                            Markets should send cases with goodwill recommendations to CEC via this email.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COST REVIEW PAGE -->
+            <div class="page" id="page-cost-review">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Cost Review</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Cost Review & FRT Management</h1>
+                    <p class="page-description">Labor costs, Flat Rate Time (FRT), Work Units (AW), and cost distribution.</p>
+                </div>
+
+                <div class="content">
+                    <p>Labor costs in SWMS are calculated based on either <strong>FRT</strong> (Flat Rate Time) for time-based billing or <strong>AW</strong> (Arbeitswerte/Work Units) for unit-based billing.</p>
+
+                    <h3>Labor Cost Fields</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>German</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Causal Work</td><td>Kausale Arbeit</td><td>Root cause work item</td></tr>
+                                <tr><td>Work Number</td><td>Arbeitsnummer</td><td>Operation code</td></tr>
+                                <tr><td>Description</td><td>Beschreibung Vorgang</td><td>Work description</td></tr>
+                                <tr><td>Work Hours</td><td>Arbeitsstunden</td><td>Hours claimed</td></tr>
+                                <tr><td>Unit Price</td><td>Arbeit Einzelpreis</td><td>Hourly rate</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Cost Distribution</h3>
+                    <p>Each cost line must have percentage distribution totaling 100%:</p>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Party</th>
+                                    <th>Field</th>
+                                    <th>Typical Range</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Dealer</td><td>Händlerprozentsatz</td><td>0-50%</td></tr>
+                                <tr><td>Manufacturer</td><td>Herstellerprozentsatz</td><td>50-100%</td></tr>
+                                <tr><td>Customer</td><td>Kundenprozentsatz</td><td>0-50%</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Claimed vs. Approved Amounts</h3>
+                    <p>The system tracks two sets of values. Always compare:</p>
+                    <ul>
+                        <li><strong>Arbeitsstunden</strong> vs. <strong>Genehmigte Arbeitsstunden</strong></li>
+                        <li><strong>Stückpreis</strong> vs. <strong>Genehmigter Stückpreis</strong></li>
+                        <li><strong>Mg.</strong> vs. <strong>Genehmigte Mg.</strong></li>
+                    </ul>
+
+                    <div class="checklist">
+                        <h4 class="checklist-title">○ Cost Verification Checklist</h4>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Work number exists in smart system</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Hours are reasonable for the operation</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Hourly rate matches current standards</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Percentage split totals 100%</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Approved amounts don't exceed claimed</span>
+                        </div>
+                        <div class="checklist-item">
+                            <div class="checkbox" onclick="this.classList.toggle('checked')"></div>
+                            <span class="checklist-text">Work description matches claim type</span>
+                        </div>
+                    </div>
+
+                    <h3>Key FRT/AW Documents</h3>
+                    <ul>
+                        <li><code>MI24-001-V01_Umstellung von FRT auf AW.pdf</code></li>
+                        <li><code>MI_1223_1_Änderung SWMS FRT_AW.pdf</code></li>
+                        <li><code>MI_0124_5_Leitfaden Änderung Stundenverrechnungssätze SWMS.pdf</code></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DECISIONS PAGE -->
+            <div class="page" id="page-decisions">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Making Decisions</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Making Decisions</h1>
+                    <p class="page-description">How to approve or reject claims and view decision history.</p>
+                </div>
+
+                <div class="content">
+                    <h3>Decision Workflow</h3>
+                    <div class="code-block">
+Dealer Submission → Initial Review → Cost Verification → Decision → Approval/Rejection → Payment Processing
+                    </div>
+
+                    <h3>Making a Decision</h3>
+                    <ol>
+                        <li>Click <strong>Entscheidung</strong> (Decision) button</li>
+                        <li>Review all information one final time</li>
+                        <li>Select approval or rejection</li>
+                        <li>Add manufacturer notes if needed</li>
+                        <li>Confirm decision</li>
+                    </ol>
+
+                    <h3>Decision History</h3>
+                    <p>Click <strong>Entscheidungsverlauf</strong> to view:</p>
+                    <ul>
+                        <li>Previous decisions on this claim</li>
+                        <li>Decision timestamps</li>
+                        <li>Decision makers</li>
+                        <li>Comments/notes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- STATUS CODES PAGE -->
+            <div class="page" id="page-status-codes">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Status Codes</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Status Codes</h1>
+                    <p class="page-description">Understanding claim statuses and their meanings.</p>
+                </div>
+
+                <div class="content">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>German</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="badge info">Processing</span></td>
+                                    <td>Wird verarbeitet</td>
+                                    <td>Claim is being reviewed - initial state</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge warning">Under Review</span></td>
+                                    <td>Under granskning</td>
+                                    <td>Awaiting decision - being evaluated</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge success">Released</span></td>
+                                    <td>Freigegeben</td>
+                                    <td>Approved for payment</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge" style="background: rgba(239,68,68,0.15); color: #ef4444;">Rejected</span></td>
+                                    <td>Abgelehnt</td>
+                                    <td>Claim denied</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Status Flow</h3>
+                    <div class="code-block">
+1. Wird verarbeitet (Processing) → Initial state
+2. Under granskning (Under Review) → Being evaluated  
+3. Freigegeben (Released) → Approved
+   OR
+   Abgelehnt (Rejected) → Denied
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAMPAIGNS PAGE -->
+            <div class="page" id="page-campaigns">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Campaigns</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Campaigns (Service Measures)</h1>
+                    <p class="page-description">TBD, TBS, and TBR campaign types and processing.</p>
+                </div>
+
+                <div class="content">
+                    <h3>Campaign Types</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>TBD</code></td>
+                                    <td>Lieferstopp</td>
+                                    <td>Delivery Stop - Mandatory action</td>
+                                </tr>
+                                <tr>
+                                    <td><code>TBS</code></td>
+                                    <td>Service-Maßnahme</td>
+                                    <td>Service Measure - Recommended action</td>
+                                </tr>
+                                <tr>
+                                    <td><code>TBR</code></td>
+                                    <td>Rückruf</td>
+                                    <td>Recall - Mandatory safety action</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Recent TBD Examples</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>TBD25025-2</td><td>smart #1 Austausch hinteren Schraubenfeder</td><td>06-01-2026</td></tr>
+                                <tr><td>TBD25026-2</td><td>Rear anti-collision beam replacement</td><td>03-11-2025</td></tr>
+                                <tr><td>TBD25022-2</td><td>smart #5 left roof rack replacement</td><td>19-08-2025</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="info-box tip">
+                        <span class="info-box-icon">i</span>
+                        <div class="info-box-content">
+                            <strong>Document Count:</strong> There are 180+ TBD documents available in SMACC.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DOCUMENTS PAGE -->
+            <div class="page" id="page-documents">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Document Index</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Document Index</h1>
+                    <p class="page-description">Reference documents available in SMACC portal.</p>
+                </div>
+
+                <div class="content">
+                    <h3>How to Access Documents</h3>
+                    <ol>
+                        <li>Navigate to: <strong>smart Service Desk → SMACC</strong></li>
+                        <li>Use <strong>Dokumentenverwaltung</strong> (Document Management)</li>
+                        <li>Filter by: Kategorie, Untergruppe, Märkte, Sprache, Dateiname</li>
+                    </ol>
+
+                    <div class="info-box tip">
+                        <span class="info-box-icon">i</span>
+                        <div class="info-box-content">
+                            <strong>Search Tip:</strong> Use German terms for better results. Filter by "Garantie" category for warranty docs. Check "Neue Dokumente" sidebar for recent uploads.
+                        </div>
+                    </div>
+
+                    <h3>SWMS Core Documents</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Document ID</th>
+                                    <th>Name</th>
+                                    <th>Topic</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>WJ24-005-V01</td><td>SWMS Stammdaten aktualisieren</td><td>Master data update</td></tr>
+                                <tr><td>WJ_25_001</td><td>SWMS Update</td><td>System updates</td></tr>
+                                <tr><td>MI_1223_1</td><td>Änderung SWMS FRT_AW</td><td>FRT/AW changes</td></tr>
+                                <tr><td>MI_0124_5</td><td>Leitfaden Stundenverrechnungssätze</td><td>Hourly rates guide</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Goodwill Documents</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Document ID</th>
+                                    <th>Name</th>
+                                    <th>Languages</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>CBN002</td><td>CX Goodwill-Benachrichtigung</td><td>DE, EN, IT, ES, PT, NL, SV</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Compensation Documents</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Document ID</th>
+                                    <th>Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>MMI_021</td><td>Kompensationszahlungen_v5</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Market Information (MMI)</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Document ID</th>
+                                    <th>Name</th>
+                                    <th>Topic</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>MMI_049</td><td>Kurzfristig relevante Trainingstermine</td><td>Training dates</td></tr>
+                                <tr><td>MMI_035</td><td>CAST Liste 2026_V1</td><td>CAST list</td></tr>
+                                <tr><td>MMI_100</td><td>Customer Service Update Einladungslinks</td><td>CS links</td></tr>
+                                <tr><td>MMI_046</td><td>Kontaktliste CCC</td><td>Contact list</td></tr>
+                                <tr><td>MMI_045</td><td>smart Aftersales Update 12.2025</td><td>Aftersales update</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Technical Guides (Leitfaden)</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Document ID</th>
+                                    <th>Name</th>
+                                    <th>Topic</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>GL_00_021</td><td>Garantieschäden vor Auslieferung</td><td>Pre-delivery damage</td></tr>
+                                <tr><td>GL_00_020</td><td>Schadensmeldung Lagerschaden</td><td>Storage damage</td></tr>
+                                <tr><td>GL_36_016</td><td>Fehlersuche Digital Key</td><td>Digital key issues</td></tr>
+                                <tr><td>HV_31_001</td><td>HV Leitfaden</td><td>High voltage guide</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QUICK REFERENCE PAGE -->
+            <div class="page" id="page-quick-ref">
+                <div class="breadcrumb">
+                    <a href="#" onclick="showPage('home')">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Quick Reference</span>
+                </div>
+
+                <div class="page-header">
+                    <h1 class="page-title">Quick Reference</h1>
+                    <p class="page-description">Essential information at a glance.</p>
+                </div>
+
+                <div class="content">
+                    <h3>URLs</h3>
+                    <ul>
+                        <li><strong>SWMS Direct:</strong> <code>https://swms.smart.com</code></li>
+                        <li><strong>Service Desk:</strong> <code>https://sed.smart.com/general/app-list</code></li>
+                    </ul>
+
+                    <h3>Claim Number Formats</h3>
+                    <ul>
+                        <li><code>WA</code> + Date + Sequence = Warranty claim</li>
+                        <li><code>NW</code> + Date + Sequence = Non-warranty/Goodwill claim</li>
+                    </ul>
+
+                    <h3>Default Currency</h3>
+                    <p>EUR (set per claim based on dealer country)</p>
+
+                    <h3>Key German Terms</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>German</th>
+                                    <th>English</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Bearbeitung von Ansprüchen</td><td>Claim Processing</td></tr>
+                                <tr><td>Garantie</td><td>Warranty</td></tr>
+                                <tr><td>Goodwill / Kulanz</td><td>Goodwill</td></tr>
+                                <tr><td>Einzelhändler</td><td>Dealer/Retailer</td></tr>
+                                <tr><td>Kilometerstand</td><td>Mileage</td></tr>
+                                <tr><td>Arbeitsstunden</td><td>Work hours</td></tr>
+                                <tr><td>Teilekosten</td><td>Parts costs</td></tr>
+                                <tr><td>Entscheidung</td><td>Decision</td></tr>
+                                <tr><td>Freigegeben</td><td>Released/Approved</td></tr>
+                                <tr><td>Abgelehnt</td><td>Rejected</td></tr>
+                                <tr><td>Anhang</td><td>Attachment</td></tr>
+                                <tr><td>Anmerkungen</td><td>Notes/Remarks</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Contact Resources</h3>
+                    <ul>
+                        <li><strong>Service Partner Contact List:</strong> MMI_046_Kontaktliste CCC</li>
+                        <li><strong>Customer Service Links:</strong> MMI_100_Customer Service Update Einladungslinks</li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Toggle collapsible nav sections
+        function toggleNavSection(element) {
+            element.classList.toggle('expanded');
+            const items = element.nextElementSibling;
+            if (items) {
+                items.classList.toggle('expanded');
+            }
+        }
+
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            const targetPage = document.getElementById('page-' + pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update nav active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.page === pageId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Close search results
+            document.getElementById('searchResults').classList.remove('active');
+            document.getElementById('searchInput').value = '';
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Search Functionality
+        const searchData = [
+            { title: 'Overview', page: 'home', keywords: 'home start introduction swms help portal' },
+            { title: 'System Navigation', page: 'navigation', keywords: 'menu dashboard navigation buttons speichern entscheidung' },
+            { title: 'Access & Login', page: 'access', keywords: 'login access url link language deutsch english' },
+            { title: 'Claim Types', page: 'claim-types', keywords: 'claim types wa nw warranty goodwill serviceart' },
+            { title: 'Warranty Claims (WA)', page: 'warranty', keywords: 'warranty wa garantie exw extended' },
+            { title: 'Goodwill Claims (NW)', page: 'goodwill', keywords: 'goodwill nw kulanz kunden cx fahrzeugdefekt lieferverzug' },
+            { title: 'Tier2 SWMS Process', page: 'tier2-swms-process', keywords: 'tier2 swms process salesforce report automated cases cec decision accept reject return daniel menner ces fyi pdf upload' },
+            { title: 'Goodwill Approval Process', page: 'goodwill-approval', keywords: 'approval checklist verify review approve reject goodwill process' },
+            { title: 'Goodwill Process & Compensation', page: 'goodwill-process', keywords: 'goodwill compensation ces approval voucher merchandise dcs discount workshop accessories points matrix customer experience' },
+            { title: 'Cost Review & FRT', page: 'cost-review', keywords: 'cost labor frt aw arbeitsstunden percentage händler hersteller' },
+            { title: 'Making Decisions', page: 'decisions', keywords: 'decision entscheidung approve reject workflow' },
+            { title: 'Status Codes', page: 'status-codes', keywords: 'status processing review released rejected freigegeben abgelehnt' },
+            { title: 'Campaigns (TBD/TBS/TBR)', page: 'campaigns', keywords: 'campaign tbd tbs tbr recall rückruf service measure' },
+            { title: 'Document Index', page: 'documents', keywords: 'documents smacc mmi guide leitfaden pdf' },
+            { title: 'Quick Reference', page: 'quick-ref', keywords: 'quick reference german terms urls contact' }
+        ];
+
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+
+            if (query.length < 2) {
+                searchResults.classList.remove('active');
+                return;
+            }
+
+            const matches = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.keywords.toLowerCase().includes(query)
+            );
+
+            if (matches.length > 0) {
+                searchResults.innerHTML = matches.map(item => `
+                    <div class="search-result-item" onclick="showPage('${item.page}')">
+                        <div class="search-result-title">${item.title}</div>
+                        <div class="search-result-path">Click to view</div>
+                    </div>
+                `).join('');
+                searchResults.classList.add('active');
+            } else {
+                searchResults.innerHTML = `
+                    <div class="search-result-item">
+                        <div class="search-result-title">No results found</div>
+                        <div class="search-result-path">Try different keywords</div>
+                    </div>
+                `;
+                searchResults.classList.add('active');
+            }
+        });
+
+        // Close search on click outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.search-box')) {
+                searchResults.classList.remove('active');
+            }
+        });
+
+        // Keyboard navigation
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                searchResults.classList.remove('active');
+                this.blur();
+            }
+        });
+    </script>
+</body>
+</html>
